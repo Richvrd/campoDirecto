@@ -1,0 +1,49 @@
+name: backend
+services:
+  laravel.test:
+    build:
+      context: ./vendor/laravel/sail/runtimes/8.3
+      dockerfile: Dockerfile
+      args:
+        WWWGROUP: "1000"
+    image: sail-8.3/app
+    ports:
+      - "8000:80"
+    environment:
+      APP_NAME: CampoDirecto
+      APP_ENV: local
+      APP_KEY: base64:ZbZnG5qj5kGvK5XpG0a0s5p0f0q0q0q0q0q0q0q0q0q=
+      APP_DEBUG: "true"
+      APP_URL: http://localhost
+      APP_TIMEZONE: America/Santiago
+      APP_LOCALE: es
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_DATABASE: campodirecto
+      WWWUSER: "1000"
+      DB_USERNAME: sail
+      DB_PASSWORD: password
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: campodirecto
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - sail-mysql:/var/lib/mysql
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+volumes:
+  sail-mysql:
+    driver: local

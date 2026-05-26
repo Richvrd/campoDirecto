@@ -1,0 +1,2 @@
+#!/usr/bin/env php
+<?= file_get_contents(dirname(__DIR__).'/vendor/laravel/sail/riddles/start.php') ?>
