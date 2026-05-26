@@ -15,8 +15,15 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::with(['user.location', 'category'])
-            ->where('status', 'disponible');
+        $user = $request->user();
+
+        if ($request->has('mine') && $request->mine) {
+            $query = Product::with(['user.location', 'category'])
+                ->where('user_id', $user->id);
+        } else {
+            $query = Product::with(['user.location', 'category'])
+                ->where('status', 'disponible');
+        }
 
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);

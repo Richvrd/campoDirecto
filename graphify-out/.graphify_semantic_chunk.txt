@@ -1,0 +1,15 @@
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/CampoDirecto_AgentPrompt.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/AGENTS.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/backend/README.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/backend/docker-compose.yml
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/backend/SETUP.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/backend/public/robots.txt
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/pnpm-workspace.yaml
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/AGENTS.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/CLAUDE.md
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/android-icon-foreground.png
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/android-icon-background.png
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/favicon.png
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/splash-icon.png
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/android-icon-monochrome.png
+/home/ricardo/Documentos/project-campoDirecto/campoDirecto/mobile/assets/icon.png

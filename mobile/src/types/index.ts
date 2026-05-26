@@ -59,10 +59,26 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface PaginatedResponse<T> {
+  current_page: number;
+  data: T[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: { url: string | null; label: string; active: boolean }[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+}
+
 export type RootStackParamList = {
   Auth: undefined;
-  BuyerTabs: undefined;
-  FarmerTabs: undefined;
+  BuyerApp: undefined;
+  FarmerApp: undefined;
 };
 
 export type AuthStackParamList = {
@@ -76,8 +92,18 @@ export type BuyerTabParamList = {
   Profile: undefined;
 };
 
+export type BuyerStackParamList = {
+  BuyerTabs: undefined;
+  ProductDetail: { productId: number };
+};
+
 export type FarmerTabParamList = {
   MyProducts: undefined;
   IncomingReservations: undefined;
   Profile: undefined;
+};
+
+export type FarmerStackParamList = {
+  FarmerTabs: undefined;
+  AddProduct: undefined | { productId?: number };
 };

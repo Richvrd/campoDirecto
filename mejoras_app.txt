@@ -1,0 +1,117 @@
+# Mejoras — CampoDirecto App
+## 26 de mayo de 2026
+
+---
+
+## Backend
+
+### ProductController — Filtro `?mine=1`
+- **Archivo:** `backend/app/Http/Controllers/ProductController.php`
+- Se agregó soporte para el parámetro `?mine=1` en `GET /api/products`.
+- Cuando se pasa `?mine=1`, retorna todos los productos del agricultor autenticado (sin filtrar por `status`).
+- Sin el parámetro, funciona como antes (solo productos `disponible`).
+
+---
+
+## Mobile — Nuevos componentes compartidos
+
+### 1. `LoadingSpinner`
+- **Archivo:** `mobile/src/components/LoadingSpinner.tsx`
+- Spinner centrado con color `#2D6A4F`.
+- Acepta prop opcional `message` para mostrar texto debajo.
+
+### 2. `CategoryFilter`
+- **Archivo:** `mobile/src/components/CategoryFilter.tsx`
+- ScrollView horizontal con chips de categorías.
+- Primer chip "Todas" seleccionado por defecto.
+- Al seleccionar, cambia a fondo verde `#2D6A4F`.
+
+### 3. `ProductCard`
+- **Archivo:** `mobile/src/components/ProductCard.tsx`
+- Muestra imagen, nombre, precio en formato CLP ($1.200), unidad, comuna y stock.
+- Punto verde si hay stock, rojo si está agotado.
+- TouchableOpacity que recibe `onPress`.
+
+### 4. `ReservationCard`
+- **Archivo:** `mobile/src/components/ReservationCard.tsx`
+- Muestra nombre del producto, cantidad, badge de estado con colores:
+  - Pendiente → amarillo
+  - Confirmada → verde
+  - Rechazada → rojo
+  - Completada → gris
+- En vista agricultor (`buyerView=false`) muestra botones "Confirmar" / "Rechazar" para reservas pendientes.
+
+---
+
+## Mobile — Pantallas nuevas/actualizadas
+
+### 5. HomeScreen (Comprador)
+- **Archivo:** `mobile/src/screens/buyer/HomeScreen.tsx`
+- FlatList paginado vía `GET /api/products?page=N&search=&category_id=`.
+- Barra de búsqueda por nombre (filtra al presionar Enter).
+- CategoryFilter horizontal que carga categorías desde `GET /api/categories`.
+- Pull-to-refresh.
+- Carga más productos al llegar al final (paginación infinita).
+- Navega a `ProductDetail` al tocar un producto.
+
+### 6. ProductDetailScreen (Comprador)
+- **Archivo:** `mobile/src/screens/buyer/ProductDetailScreen.tsx`
+- Muestra imagen grande, nombre, precio CLP, descripción, stock.
+- Sección del agricultor: nombre, comuna, teléfono.
+- Input de cantidad con validación (mínimo 1, máximo = stock).
+- Botón "Reservar" → `POST /api/reservations`.
+- Alerta de confirmación al crear la reserva.
+
+### 7. MyReservationsScreen (Comprador)
+- **Archivo:** `mobile/src/screens/buyer/MyReservationsScreen.tsx`
+- FlatList con `GET /api/reservations`.
+- Muestra ReservationCard en modo `buyerView` (nombre del agricultor).
+- Pull-to-refresh.
+
+### 8. MyProductsScreen (Agricultor)
+- **Archivo:** `mobile/src/screens/farmer/MyProductsScreen.tsx`
+- FlatList con `GET /api/products?mine=1`.
+- Cada tarjeta muestra badge de estado (Disponible/Agotado/Pausado).
+- Opción "Eliminar" con confirmación → `DELETE /api/products/:id`.
+- FAB botón verde "+" → navega a `AddProductScreen`.
+- Pull-to-refresh.
+
+### 9. AddProductScreen (Agricultor)
+- **Archivo:** `mobile/src/screens/farmer/AddProductScreen.tsx`
+- Formulario: nombre, descripción, precio, unidad, stock.
+- CategoryPicker con chips cargados desde `GET /api/categories`.
+- ImagePicker vía `expo-image-picker` (selector de galería, aspect 4:3).
+- Envía `multipart/form-data` a `POST /api/products`.
+- Validación de campos antes de enviar.
+- Muestra errores del servidor (campo por campo).
+
+### 10. IncomingReservationsScreen (Agricultor)
+- **Archivo:** `mobile/src/screens/farmer/IncomingReservationsScreen.tsx`
+- FlatList con `GET /api/reservations` (filtrado automático por el backend para el agricultor autenticado).
+- Muestra ReservationCard con botones "Confirmar" / "Rechazar".
+- Confirmar → `PUT /api/reservations/:id/status { status: "confirmada" }`.
+- Rechazar → confirmación, luego `PUT /api/reservations/:id/status { status: "rechazada" }`.
+- Pull-to-refresh.
+
+---
+
+## Mobile — Navegación
+
+### AppNavigator
+- **Archivo:** `mobile/src/navigation/AppNavigator.tsx`
+- Reestructurado con stacks anidados:
+  - `RootStack` → Auth | BuyerApp | FarmerApp
+  - `BuyerApp`: BuyerStack = BuyerTabs (Home, MyReservations, Profile) + ProductDetail
+  - `FarmerApp`: FarmerStack = FarmerTabs (MyProducts, IncomingReservations, Profile) + AddProduct
+- Headers con fondo `#2D6A4F` y texto blanco en todas las pantallas de detalle.
+
+### Tipos (types/index.ts)
+- **Archivo:** `mobile/src/types/index.ts`
+- Agregada interfaz `PaginatedResponse<T>` para respuestas paginadas de Laravel.
+- Agregados `BuyerStackParamList` y `FarmerStackParamList` para navegación anidada.
+- Actualizado `RootStackParamList`: Auth, BuyerApp, FarmerApp.
+
+---
+
+## TypeScript
+- **0 errores** (`npx tsc --noEmit`).
