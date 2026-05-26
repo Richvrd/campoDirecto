@@ -14,3 +14,11 @@ mobile/dist/
 # Sistema
 .DS_Store
 *.sqlite
+
+# Expo / React Native
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/.env
+mobile/android/
+mobile/ios/
